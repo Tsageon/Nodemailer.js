@@ -1,12 +1,14 @@
 const express = require('express');
 require('dotenv').config();
 const nodemailer = require('nodemailer');
-const bodyParser = require('express').json(); 
+const cors = require('cors');
 
 const app = express();
+
 const port = 5000;
 
-app.use(bodyParser);
+app.use(express.json());
+app.use(cors()); 
 
 app.post('/api/contact', (req, res) => {
   const { name, email, message } = req.body;
@@ -26,7 +28,7 @@ app.post('/api/contact', (req, res) => {
     subject: `New message from ${name}`,
     text: message,
   };
-
+  console.log(req.body);
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       console.error('Error sending email:', error);
